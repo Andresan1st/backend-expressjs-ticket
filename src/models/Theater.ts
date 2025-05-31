@@ -19,4 +19,6 @@ const theaterSchema = new mongoose.Schema({
 
 )
 
+
+
 export default mongoose.model('Theater',theaterSchema,"theaters");

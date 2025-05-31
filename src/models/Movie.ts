@@ -12,16 +12,15 @@ const movieSchema = new mongoose.Schema({
         ref:"Genre",    
      
     },
-    theaters:{
-        type:mongoose.Schema.Types.ObjectId,
-        ref:"Theater",    
-     
-    },
+    theaters: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Theater"
+    }],
     description:{
         type:String,
         required:true
     },
-    thunbnail:{
+    thumbnail:{
         type:String,
         required:true
     },
@@ -32,7 +31,7 @@ const movieSchema = new mongoose.Schema({
     virtuals:{
         thumbnailUrl:{
             get(){
-                return `${getAssetUrl()}${this.thunbnail}`
+                return `${getAssetUrl()}${this.thumbnail}`
             }
         }
     },
@@ -73,9 +72,9 @@ movieSchema.post("deleteOne",async function(doc) {
         })
 
         for(const theater of doc.theaters) {
-            await Theater.findByIdAndUpdate(theater,{
+            await Theater.findByIdAndUpdate(theater._id,{
                 $pull:{
-                    movies:doc._id
+                    movies:theater._id
                 }
             })
         }   
